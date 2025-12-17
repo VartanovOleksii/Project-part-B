@@ -99,6 +99,19 @@ namespace Project__part_B_
             return info;
         }
 
+        public static bool AreEqual(Producer? producer1, Producer? producer2)
+        {
+            bool areEqual;
+
+            areEqual = (producer1.Name == producer2.Name) &&
+                       (producer1.Age == producer2.Age) &&
+                       (Math.Abs(producer1.Salary - producer2.Salary) < 0.001) &&
+                       (producer1.YearsOfExperience == producer2.YearsOfExperience) &&
+                       (producer1.Specialization == producer2.Specialization);
+
+            return areEqual;
+        }
+
         //Constructors
         public Producer() : this(Person.DefName, Person.DefAge, Person.DefSalary, DefYearsOfExperience, DefSpecialization)
         {

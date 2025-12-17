@@ -219,5 +219,35 @@ namespace TestProject
             //Assert
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void AreEqual_not_equal()
+        {
+            //Arrange
+            Producer producer1 = new Producer("Butch Vig", 70, 100000, 30, "Architecture of grunge sound");
+            Producer producer2 = new Producer("Butch Vigaa", 70, 100000, 30, "Architecture of grunge sound");
+            bool expected = false;
+
+            //Act
+            bool actual = Producer.AreEqual(producer1, producer2);
+
+            //Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void AreEqual_are_equal()
+        {
+            //Arrange
+            Producer producer1 = new Producer("Butch Vig", 70, 100000, 30, "Architecture of grunge sound");
+            Producer producer2 = new Producer("Butch Vig", 70, 100000, 30, "Architecture of grunge sound");
+            bool expected = true;
+
+            //Act
+            bool actual = Producer.AreEqual(producer1, producer2);
+
+            //Assert
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
