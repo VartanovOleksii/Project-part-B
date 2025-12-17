@@ -104,13 +104,13 @@ namespace Project__part_B_
             return info;
         }
 
-        public bool AreEqual(Artist? artist1, Artist? artist2)
+        public static bool AreEqual(Artist? artist1, Artist? artist2)
         {
             bool areEqual;
 
             areEqual = (artist1.Name == artist2.Name) && 
                        (artist1.Age == artist2.Age) && 
-                       (artist1.Salary == artist2.Salary) &&
+                       (Math.Abs(artist1.Salary - artist2.Salary) < 0.001) &&
                        (artist1.Instrument == artist2.Instrument) &&
                        (artist1.IsActive == artist2.IsActive) &&
                        (artist1.FanCount == artist2.FanCount);

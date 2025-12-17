@@ -250,5 +250,65 @@ namespace TestProject
             //Assert
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void AreEqual_null_values_with_full_values()
+        {
+            //Arrange
+            Artist artist1 = new Artist();
+            Artist artist2 = new Artist("bbb", 18, 10.01, "guitar", true, 1);
+            bool expected = false;
+
+            //Act
+            bool actual = Artist.AreEqual(artist1, artist2);
+
+            //Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void AreEqual_null_values_with_null_values()
+        {
+            //Arrange
+            Artist artist1 = new Artist();
+            Artist artist2 = new Artist();
+            bool expected = true;
+
+            //Act
+            bool actual = Artist.AreEqual(artist1, artist2);
+
+            //Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void AreEqual_not_equal()
+        {
+            //Arrange
+            Artist artist1 = new Artist("aaa", 18, 10.01, "guitar", true, 1);
+            Artist artist2 = new Artist("bbb", 18, 10.01, "guitar", true, 1);
+            bool expected = false;
+
+            //Act
+            bool actual = Artist.AreEqual(artist1, artist2);
+
+            //Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void AreEqual_are_equal()
+        {
+            //Arrange
+            Artist artist1 = new Artist("aaa", 18, 10.01, "guitar", true, 1);
+            Artist artist2 = new Artist("aaa", 18, 10.01, "guitar", true, 1);
+            bool expected = true;
+
+            //Act
+            bool actual = Artist.AreEqual(artist1, artist2);
+
+            //Assert
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
