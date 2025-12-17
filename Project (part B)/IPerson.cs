@@ -9,5 +9,7 @@ namespace Project__part_B_
         public string Name { get; set; }
         public int Age { get; set; }
         public double Salary { get; set; }
+
+        string GetInfo();
     }
 }
