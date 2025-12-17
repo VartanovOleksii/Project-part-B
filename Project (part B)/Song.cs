@@ -76,7 +76,12 @@ namespace Project__part_B_
 
         public string GetMetadata()
         {
-            throw new NotImplementedException();
+            string result = $"Name: {SongName}\n" +
+                            $"Author: {Band.BandName}\n" +
+                            $"Genre: {Genre}\n" +
+                            $"Total plays: {TotalPlays}";
+
+            return result;
         }
 
 
