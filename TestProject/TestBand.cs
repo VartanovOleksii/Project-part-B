@@ -92,7 +92,9 @@ namespace TestProject
         {
             //Arrange
             Producer producer1 = new Producer("Butch Vig", 70, 100000, "Architecture of grunge sound");
-            List<Producer> producers = new List<Producer>() { producer1 };
+            Producer producer2 = new Producer("Butch Viga", 70, 100000, "Architecture of grunge sound");
+
+            List<Producer> producers = new List<Producer>() { producer1, producer2 };
             List<Producer> expected = producers;
 
             //Act
@@ -103,11 +105,7 @@ namespace TestProject
             Assert.HasCount(expected.Count, actual);
             for (int i = 0; i < expected.Count; i++)
             {
-                Assert.AreEqual(expected[i].Name, actual[i].Name);
-                Assert.AreEqual(expected[i].Age, actual[i].Age);
-                Assert.AreEqual(expected[i].Salary, actual[i].Salary);
-                Assert.AreEqual(expected[i].YearsOfExperience, actual[i].YearsOfExperience);
-                Assert.AreEqual(expected[i].Specialization, actual[i].Specialization);
+                Assert.IsTrue(Producer.AreEqual(expected[i], actual[i]));
             }
         }
 
@@ -127,12 +125,7 @@ namespace TestProject
             Assert.HasCount(expected.Count, actual);
             for (int i = 0; i < expected.Count; i++)
             {
-                Assert.AreEqual(expected[i].Name, actual[i].Name);
-                Assert.AreEqual(expected[i].Age, actual[i].Age);
-                Assert.AreEqual(expected[i].Salary, actual[i].Salary);
-                Assert.AreEqual(expected[i].Instrument, actual[i].Instrument);
-                Assert.AreEqual(expected[i].IsActive, actual[i].IsActive);
-                Assert.AreEqual(expected[i].FanCount, actual[i].FanCount);
+                Assert.IsTrue(Artist.AreEqual(expected[i], actual[i]));
             }
         }
     }
