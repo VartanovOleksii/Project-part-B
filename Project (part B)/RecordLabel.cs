@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -56,9 +57,11 @@ namespace Project__part_B_
             return true;
         }
 
-        public bool UnsignBand(string name)
+        public int UnsignBand(string name)
         {
-            throw new NotImplementedException();
+            int removedCount = _bands.RemoveAll(band => band.BandName.Equals(name, StringComparison.OrdinalIgnoreCase));
+
+            return removedCount;
         }
 
         //Constructors
