@@ -49,7 +49,11 @@ namespace Project__part_B_
 
         public bool UnsignBand(int index)
         {
-            throw new NotImplementedException();
+            if (index < 0 || index > _bands.Count - 1)
+                return false;
+
+            _bands.RemoveAt(index);
+            return true;
         }
 
         public bool UnsignBand(string name)
