@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -14,6 +15,10 @@ namespace Project__part_B_
         private string _instrument;
         private bool _isActive;
         private int _fanCount;
+
+        public static string DefInstrument = "Guitar";
+        public static bool DefIsActive = false;
+        public static int DefFanCount = 0;
         
         //Public properties
         public override string Name
@@ -114,16 +119,22 @@ namespace Project__part_B_
         }
 
         //Constructors
-        public Artist()
+        public Artist() : this(Person.DefName, Person.DefAge, Person.DefSalary, DefInstrument, DefIsActive, DefFanCount)
         {
         }
 
-        public Artist(string name, int age, double salary, string instrument)
+        public Artist(string name, int age, double salary, string instrument) : this (name, age, salary, instrument, DefIsActive, DefFanCount)
+        {
+        }
+
+        public Artist(string name, int age, double salary, string instrument, bool isActive, int fanCount)
         {
             Name = name;
             Age = age;
             Salary = salary;
             Instrument = instrument;
+            IsActive = isActive;
+            FanCount = fanCount;
         }
     }
 }

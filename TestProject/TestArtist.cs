@@ -211,5 +211,44 @@ namespace TestProject
             //Assert
             Assert.AreEqual(expected, actual);
         }
+
+        //Public methods
+        [TestMethod]
+        public void GetInfo_null_values()
+        {
+            //Arrange
+            string expected = $"Name: aaa\n" +
+                              $"Age: 18\n" +
+                              $"Salary: 0,01$\n" +
+                              $"Instrument: Guitar\n" +
+                              $"Is active: False\n" +
+                              $"Amount of fans: 0"; ;
+
+            //Act
+            string actual = artist.GetInfo();
+
+            //Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void GetInfo_full_values()
+        {
+            //Arrange
+            Artist artist1 = new Artist("Kurt Cobain", 27, 150000, "Electric guitar", true, 1000);
+            
+            string expected = $"Name: Kurt Cobain\n" +
+                              $"Age: 27\n" +
+                              $"Salary: 150000$\n" +
+                              $"Instrument: Electric guitar\n" +
+                              $"Is active: True\n" +
+                              $"Amount of fans: 1000"; ;
+
+            //Act
+            string actual = artist1.GetInfo();
+
+            //Assert
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
