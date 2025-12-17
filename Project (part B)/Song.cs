@@ -61,7 +61,10 @@ namespace Project__part_B_
         //Public methods
         public string Play()
         {
-            throw new NotImplementedException();
+            _totalPlats++;
+            string result = $"Now is playing: {SongName}";
+
+            return result;
         }
 
         public string Stop()
