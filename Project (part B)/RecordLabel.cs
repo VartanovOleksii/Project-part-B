@@ -6,9 +6,35 @@ namespace Project__part_B_
 {
     public class RecordLabel
     {
+        //Public static properties
+        public static string DefName = "Label";
+        public static List<Band> DefBands = new List<Band>();  
+
+        //Private properties
+        private string _recordLabelName;
+        private List<Band> _bands;
+
         //Public properties
-        public string RecordLabelName { get; set; }
-        public List<Band> Bands { get; set; }
+        public string RecordLabelName
+        {
+            get => _recordLabelName;
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                    throw new ArgumentNullException("Enter label name.");
+
+                if (value.Length < 3 || value.Length > 50)
+                    throw new ArgumentOutOfRangeException("Label name have to be between 3 and 50 characters.");
+
+                _recordLabelName = value;
+            }
+        }
+
+        public List<Band> Bands
+        {
+            get => _bands; 
+            set => _bands = value;
+        }
 
         //Public methods
         public void SignBand(Band band)
@@ -32,15 +58,12 @@ namespace Project__part_B_
         }
 
         //Constructors
-        public RecordLabel()
+        public RecordLabel() :this(DefName, DefBands)
         {
-            throw new NotImplementedException();
         }
 
         public RecordLabel(string name, List<Band> bands)
         {
-            throw new NotImplementedException();
-
             RecordLabelName = name;
             Bands = bands;
         }
