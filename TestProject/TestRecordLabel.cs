@@ -1,4 +1,5 @@
 ﻿using Project__part_B_;
+using System;
 
 namespace TestProject
 {
@@ -294,7 +295,7 @@ namespace TestProject
             //Act
 
             //Assert
-            Assert.Throws<ArgumentNullException>(() => recordLabel.UnsignBand(name));
+            Assert.IsFalse(recordLabel.UnsignBand(name));
         }
 
         [TestMethod]
