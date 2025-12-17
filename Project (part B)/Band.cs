@@ -6,6 +6,12 @@ namespace Project__part_B_
 {
     public class Band
     {
+        //Private properties
+        private string _bandName;
+        private int _monthlyListening;
+        private List<Producer> _producers;
+        private List<Artist> _artists;
+        
         //Public properties
         public string BandName { get; set; }
         public int MonthlyListening { get; set; }
@@ -15,13 +21,11 @@ namespace Project__part_B_
         //Constructors
         public Band()
         {
-            throw new NotImplementedException();
         }
 
         public Band(string name, List<Producer> producers)
         {
-            throw new NotImplementedException();
-
+            
             BandName = name;
             Producers = producers;
 
