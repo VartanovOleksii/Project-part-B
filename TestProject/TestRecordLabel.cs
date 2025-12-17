@@ -87,22 +87,13 @@ namespace TestProject
                 Assert.HasCount(expected[i].Producers.Count, actual); 
                 for (int j = 0; j < expected[i].Producers.Count; j++)
                 {
-                    Assert.AreEqual(expected[i].Producers[j].Name, actual[i].Producers[j].Name);
-                    Assert.AreEqual(expected[i].Producers[j].Age, actual[i].Producers[j].Age);
-                    Assert.AreEqual(expected[i].Producers[j].Salary, actual[i].Producers[j].Salary);
-                    Assert.AreEqual(expected[i].Producers[j].YearsOfExperience, actual[i].Producers[j].YearsOfExperience);
-                    Assert.AreEqual(expected[i].Producers[j].Specialization, actual[i].Producers[j].Specialization);
+                    Assert.IsTrue(Producer.AreEqual(expected[i].Producers[j], actual[i].Producers[j]));
                 }
 
                 Assert.HasCount(expected[i].Artists.Count, actual);
                 for (int j = 0; j < expected[i].Artists.Count; j++)
                 {
-                    Assert.AreEqual(expected[i].Artists[j].Name, actual[i].Artists[j].Name);
-                    Assert.AreEqual(expected[i].Artists[j].Age, actual[i].Artists[j].Age);
-                    Assert.AreEqual(expected[i].Artists[j].Salary, actual[i].Artists[j].Salary);
-                    Assert.AreEqual(expected[i].Artists[j].Instrument, actual[i].Artists[j].Instrument);
-                    Assert.AreEqual(expected[i].Artists[j].IsActive, actual[i].Artists[j].IsActive);
-                    Assert.AreEqual(expected[i].Artists[j].FanCount, actual[i].Artists[j].FanCount);
+                    Assert.IsTrue(Artist.AreEqual(expected[i].Artists[j], actual[i].Artists[j]));
                 }
             }
         }
