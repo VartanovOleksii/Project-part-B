@@ -1,0 +1,186 @@
+﻿using Project__part_B_;
+
+namespace TestProject
+{
+    [TestClass]
+    public sealed class TestProducer
+    {
+        private Producer producer;
+
+        //Setup
+        [TestInitialize]
+        public void Setup()
+        {
+            producer = new Producer();
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            producer = null;
+        }
+
+        //Public properties
+        [TestMethod]
+        public void Name_empty_input()
+        {
+            //Arrange
+
+            //Act
+
+            //Assert
+            Assert.Throws<ArgumentNullException>(() => producer.Name = "");
+        }
+
+        [TestMethod]
+        [DataRow("a")] //less than 3 symbols
+        [DataRow("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")] //more than 50 symbols
+        public void Name_incorrect_input(string s)
+        {
+            //Arrange
+
+            //Act
+
+            //Assert
+            Assert.Throws<ArgumentOutOfRangeException>(() => producer.Name = s);
+        }
+
+        [TestMethod]
+        public void Name_correct_input()
+        {
+            //Arrange
+            string name = "Butch Vig";
+            string expected = name;
+
+            //Act
+            producer.Name = name;
+            string actual = producer.Name;
+
+            //Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        [DataRow(19)] //less than 20
+        [DataRow(100)] //more than 95
+        public void Age_incorrect_input(int age)
+        {
+            //Arrange
+
+            //Act
+
+            //Assert
+            Assert.Throws<ArgumentOutOfRangeException>(() => producer.Age = age);
+        }
+
+        [TestMethod]
+        public void Age_correct_input()
+        {
+            //Arrange
+            int age = 70;
+            int expected = age;
+
+            //Act
+            producer.Age = age;
+            int actual = producer.Age;
+
+            //Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        [DataRow(-20)] //less or equal 0
+        [DataRow(0)] //less or equal 0
+        public void Salary_incorrect_input(double salary)
+        {
+            //Arrange
+
+            //Act
+
+            //Assert
+            Assert.Throws<ArgumentOutOfRangeException>(() => producer.Salary = salary);
+        }
+
+        [TestMethod]
+        public void Salary_correct_input()
+        {
+            //Arrange
+            double salary = 150000;
+            double expected = salary;
+
+            //Act
+            producer.Salary = salary;
+            double actual = producer.Salary;
+
+            //Assert
+            Assert.AreEqual(expected, actual, 0.001);
+        }
+
+        [TestMethod]
+        [DataRow (2)] //less than 3
+        [DataRow (95)] //more than 90
+        public void YearsOfExperience_incorrect_input(int years)
+        {
+            //Arrange
+
+            //Act
+
+            //Assert
+            Assert.Throws<ArgumentOutOfRangeException>(() => producer.YearsOfExperience = years);
+        }
+
+        [TestMethod]
+        public void YearsOfExperience_correct_input()
+        {
+            //Arrange
+            int years = 25;
+            int expected = years;
+
+            //Act
+            producer.YearsOfExperience = years;
+            int actual = producer.YearsOfExperience;
+
+            //Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void Specialization_empty_input()
+        {
+            //Arrange
+
+            //Act
+
+            //Assert
+            Assert.Throws<ArgumentNullException>(() => producer.Specialization = "");
+        }
+
+        [TestMethod]
+        [DataRow("a")] //less than 3 symbols
+        [DataRow("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")] //more than 50 symbols
+        public void Specialization_incorrect_input(string s)
+        {
+            //Arrange
+
+            //Act
+
+            //Assert
+            Assert.Throws<ArgumentOutOfRangeException>(() => producer.Specialization = s);
+        }
+
+        [TestMethod]
+        public void Specialization_correct_input()
+        {
+            //Arrange
+            string specialization = "Architecture of grunge sound";
+            string expected = specialization;
+
+            //Act
+            producer.Specialization = specialization;
+            string actual = producer.Specialization;
+
+            //Assert
+            Assert.AreEqual(expected, actual);
+        }
+    }
+}
