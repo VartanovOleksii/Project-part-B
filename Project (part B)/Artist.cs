@@ -8,6 +8,11 @@ namespace Project__part_B_
 {
     public class Artist: Person
     {
+        //Public static properties
+        public static string DefInstrument = "Guitar";
+        public static bool DefIsActive = false;
+        public static int DefFanCount = 0;
+
         //Private properties
         private string _name;
         private int _age;
@@ -15,10 +20,6 @@ namespace Project__part_B_
         private string _instrument;
         private bool _isActive;
         private int _fanCount;
-
-        public static string DefInstrument = "Guitar";
-        public static bool DefIsActive = false;
-        public static int DefFanCount = 0;
         
         //Public properties
         public override string Name
