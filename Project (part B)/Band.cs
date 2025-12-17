@@ -37,7 +37,7 @@ namespace Project__part_B_
             set
             {
                 if (value < 0)
-                    throw new ArgumentOutOfRangeException("Monthly listenings have to be more than zero");
+                    throw new ArgumentOutOfRangeException("Monthly listenings have to be more than or equal to zero");
 
                 _monthlyListening = value;
             }

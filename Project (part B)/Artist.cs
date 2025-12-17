@@ -47,7 +47,6 @@ namespace Project__part_B_
                 _age = value;
             }
         }
-
         public override double Salary
         {
             get => _salary;
@@ -59,7 +58,6 @@ namespace Project__part_B_
                 _salary = value;
             }
         }
-
         public string Instrument
         {
             get => _instrument;
@@ -84,7 +82,7 @@ namespace Project__part_B_
             set
             {
                 if (value < 0)
-                    throw new ArgumentOutOfRangeException("Fan count have to be more than zero");
+                    throw new ArgumentOutOfRangeException("Fan count have to be more than or equal to zero");
 
                 _fanCount = value;
             }
