@@ -182,5 +182,42 @@ namespace TestProject
             //Assert
             Assert.AreEqual(expected, actual);
         }
+
+        //Public methods
+        [TestMethod]
+        public void GetInfo_null_values()
+        {
+            //Arrange
+            string expected = $"Name: Alan\n" +
+                              $"Age: 25\n" +
+                              $"Salary: 0,01$\n" +
+                              $"Years of experience: 3\n" +
+                              $"Specialization: Writing lyrics";
+
+            //Act
+            string actual = producer.GetInfo();
+
+            //Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void GetInfo_full_values()
+        {
+            //Arrange
+            Producer producer1 = new Producer("Butch Vig", 70, 100000, 30, "Architecture of grunge sound");
+
+            string expected = $"Name: Butch Vig\n" +
+                              $"Age: 70\n" +
+                              $"Salary: 100000$\n" +
+                              $"Years of experience: 30\n" +
+                              $"Specialization: Architecture of grunge sound";
+
+            //Act
+            string actual = producer1.GetInfo();
+
+            //Assert
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

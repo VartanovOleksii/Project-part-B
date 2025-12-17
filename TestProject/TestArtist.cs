@@ -217,12 +217,12 @@ namespace TestProject
         public void GetInfo_null_values()
         {
             //Arrange
-            string expected = $"Name: aaa\n" +
-                              $"Age: 18\n" +
+            string expected = $"Name: Alan\n" +
+                              $"Age: 25\n" +
                               $"Salary: 0,01$\n" +
                               $"Instrument: Guitar\n" +
                               $"Is active: False\n" +
-                              $"Amount of fans: 0"; ;
+                              $"Amount of fans: 0";
 
             //Act
             string actual = artist.GetInfo();
@@ -242,7 +242,7 @@ namespace TestProject
                               $"Salary: 150000$\n" +
                               $"Instrument: Electric guitar\n" +
                               $"Is active: True\n" +
-                              $"Amount of fans: 1000"; ;
+                              $"Amount of fans: 1000";
 
             //Act
             string actual = artist1.GetInfo();

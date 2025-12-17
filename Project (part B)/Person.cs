@@ -9,8 +9,8 @@ namespace Project__part_B_
 {
     public abstract class Person: IPerson, IComparable<Person>
     {
-        public static string DefName = "aaa";
-        public static int DefAge = 18;
+        public static string DefName = "Alan";
+        public static int DefAge = 25;
         public static double DefSalary = 0.01;
         
         public abstract string Name { get; set; }
