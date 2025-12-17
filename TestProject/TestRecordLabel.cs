@@ -248,22 +248,13 @@ namespace TestProject
                 Assert.HasCount(expected[i].Producers.Count, actual);
                 for (int j = 0; j < expected[i].Producers.Count; j++)
                 {
-                    Assert.AreEqual(expected[i].Producers[j].Name, actual[i].Producers[j].Name);
-                    Assert.AreEqual(expected[i].Producers[j].Age, actual[i].Producers[j].Age);
-                    Assert.AreEqual(expected[i].Producers[j].Salary, actual[i].Producers[j].Salary);
-                    Assert.AreEqual(expected[i].Producers[j].YearsOfExperience, actual[i].Producers[j].YearsOfExperience);
-                    Assert.AreEqual(expected[i].Producers[j].Specialization, actual[i].Producers[j].Specialization);
+                    Assert.IsTrue(Producer.AreEqual(expected[i].Producers[j], actual[i].Producers[j]));
                 }
 
                 Assert.HasCount(expected[i].Artists.Count, actual);
                 for (int j = 0; j < expected[i].Artists.Count; j++)
                 {
-                    Assert.AreEqual(expected[i].Artists[j].Name, actual[i].Artists[j].Name);
-                    Assert.AreEqual(expected[i].Artists[j].Age, actual[i].Artists[j].Age);
-                    Assert.AreEqual(expected[i].Artists[j].Salary, actual[i].Artists[j].Salary);
-                    Assert.AreEqual(expected[i].Artists[j].Instrument, actual[i].Artists[j].Instrument);
-                    Assert.AreEqual(expected[i].Artists[j].IsActive, actual[i].Artists[j].IsActive);
-                    Assert.AreEqual(expected[i].Artists[j].FanCount, actual[i].Artists[j].FanCount);
+                    Assert.IsTrue(Artist.AreEqual(expected[i].Artists[j], actual[i].Artists[j]));
                 }
             }
         }
@@ -295,17 +286,15 @@ namespace TestProject
             //Act
 
             //Assert
-            Assert.IsFalse(recordLabel.UnsignBand(name));
+            Assert.AreEqual(recordLabel.UnsignBand(name), 0);
         }
 
         [TestMethod]
         [DataRow("a")] //less than 3 symbols
         [DataRow("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")] //more than 50 symbols
-        public void UnsignBand_name_incorrect_input()
+        public void UnsignBand_name_incorrect_input(string name)
         {
             //Arrange
-            string name = "";
-
             Producer producer1 = new Producer("Butch Vig", 70, 100000, "Architecture of grunge sound");
             List<Producer> producers = new List<Producer>() { producer1 };
 
@@ -325,15 +314,16 @@ namespace TestProject
             recordLabel.SignBand(bands);
 
             //Act
+            int res = recordLabel.UnsignBand(name);
 
             //Assert
-            Assert.Throws<ArgumentException>(() => recordLabel.UnsignBand(name));
+            Assert.AreEqual(res, 0);
         }
 
         [TestMethod]
-        [DataRow("Rolling Stones", false)]
-        [DataRow("Sonic Youth", true)]
-        public void UnsignBand_name_correct_input(string name, bool expectedRes)
+        [DataRow("Rolling Stones", 0)]
+        [DataRow("Sonic Youth", 1)]
+        public void UnsignBand_name_correct_input(string name, int expectedRes)
         {
             //Arrange
             Producer producer1 = new Producer("Butch Vig", 70, 100000, "Architecture of grunge sound");
@@ -353,9 +343,10 @@ namespace TestProject
 
             List<Band> bands = new List<Band>() { band1, band2 };
             recordLabel.SignBand(bands);
+
             List<Band> expected = null;
 
-            if (expectedRes)
+            if (expectedRes != 0)
             {
                 expected = new List<Band>() { band1 };
             }
@@ -365,34 +356,26 @@ namespace TestProject
             }
 
             //Act
-            bool actualRes = recordLabel.UnsignBand(name);
+            int actualRes = recordLabel.UnsignBand(name);
             List<Band> actual = recordLabel.Bands;
             
 
             //Assert
             Assert.AreEqual(expectedRes, actualRes);
             Assert.HasCount(expected.Count, actual);
+            Assert.HasCount(expected.Count, actual);
             for (int i = 0; i < expected.Count; i++)
             {
-                Assert.HasCount(expected[i].Producers.Count, actual);
+                Assert.HasCount(expected[i].Producers.Count, actual[i].Producers);
                 for (int j = 0; j < expected[i].Producers.Count; j++)
                 {
-                    Assert.AreEqual(expected[i].Producers[j].Name, actual[i].Producers[j].Name);
-                    Assert.AreEqual(expected[i].Producers[j].Age, actual[i].Producers[j].Age);
-                    Assert.AreEqual(expected[i].Producers[j].Salary, actual[i].Producers[j].Salary);
-                    Assert.AreEqual(expected[i].Producers[j].YearsOfExperience, actual[i].Producers[j].YearsOfExperience);
-                    Assert.AreEqual(expected[i].Producers[j].Specialization, actual[i].Producers[j].Specialization);
+                    Assert.IsTrue(Producer.AreEqual(expected[i].Producers[j], actual[i].Producers[j]));
                 }
 
-                Assert.HasCount(expected[i].Artists.Count, actual);
+                Assert.HasCount(expected[i].Artists.Count, actual[i].Producers);
                 for (int j = 0; j < expected[i].Artists.Count; j++)
                 {
-                    Assert.AreEqual(expected[i].Artists[j].Name, actual[i].Artists[j].Name);
-                    Assert.AreEqual(expected[i].Artists[j].Age, actual[i].Artists[j].Age);
-                    Assert.AreEqual(expected[i].Artists[j].Salary, actual[i].Artists[j].Salary);
-                    Assert.AreEqual(expected[i].Artists[j].Instrument, actual[i].Artists[j].Instrument);
-                    Assert.AreEqual(expected[i].Artists[j].IsActive, actual[i].Artists[j].IsActive);
-                    Assert.AreEqual(expected[i].Artists[j].FanCount, actual[i].Artists[j].FanCount);
+                    Assert.IsTrue(Artist.AreEqual(expected[i].Artists[j], actual[i].Artists[j]));
                 }
             }
         }
