@@ -208,7 +208,7 @@ namespace TestProject
             //Act
 
             //Assert
-            Assert.Throws<ArgumentOutOfRangeException>(() => recordLabel.UnsignBand(index));
+            Assert.IsFalse(recordLabel.UnsignBand(index));
         }
 
         [TestMethod]
