@@ -39,12 +39,12 @@ namespace Project__part_B_
         //Public methods
         public void SignBand(Band band)
         {
-            throw new NotImplementedException();
+            _bands.Add(band);
         }
 
         public void SignBand(List<Band> bands)
         {
-            throw new NotImplementedException();
+            _bands.AddRange(bands);
         }
 
         public bool UnsignBand(int index)
@@ -58,8 +58,10 @@ namespace Project__part_B_
         }
 
         //Constructors
-        public RecordLabel() :this(DefName, DefBands)
+        public RecordLabel()
         {
+            RecordLabelName = DefName;
+            _bands = new List<Band>();
         }
 
         public RecordLabel(string name, List<Band> bands)
