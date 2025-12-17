@@ -69,7 +69,9 @@ namespace Project__part_B_
 
         public string Stop()
         {
-            throw new NotImplementedException();
+            string result = $"On pause: {SongName}";
+
+            return result;
         }
 
         public string GetMetadata()
