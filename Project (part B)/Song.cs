@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Text;
+using System.Xml.Linq;
 
 namespace Project__part_B_
 {
-    public class Song: IMediaContent
+    public class Song: IMediaContent, IComparable<Song>
     {
         //Public static properties
         public static string DefSongName = "Song";
@@ -82,6 +84,13 @@ namespace Project__part_B_
                             $"Total plays: {TotalPlays}";
 
             return result;
+        }
+
+        public int CompareTo(Song? other)
+        {
+            if (other == null)
+                throw new ArgumentNullException("Incorrect value.");
+            return SongName.CompareTo(other.SongName);
         }
 
 
