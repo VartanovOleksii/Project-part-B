@@ -93,6 +93,16 @@ namespace Project__part_B_
             return SongName.CompareTo(other.SongName);
         }
 
+        public bool Equals (Song? other)
+        {
+            if (other == null)
+                throw new ArgumentNullException("Incorrect value.");
+            return SongName == other.SongName;
+        }
+
+        public override bool Equals(object? other)
+            => Equals(other as Song);
+        
 
         //Constructors
         public Song() : this (DefSongName, DefTotalPlays, DefBand, DefGenre)
