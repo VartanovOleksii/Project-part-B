@@ -1416,5 +1416,217 @@ namespace Project__part_B_
         }
         #endregion
 
+        #region Search & Filter
+        static void SearchAndFilter()
+        {
+            bool back = false;
+            while (!back)
+            {
+                Console.Clear();
+                Console.WriteLine("╔════════════════════════════════════════════════════════════╗");
+                Console.WriteLine("║              SEARCH & FILTER                               ║");
+                Console.WriteLine("╠════════════════════════════════════════════════════════════╣");
+                Console.WriteLine("║  1. Search Artists by Name                                 ║");
+                Console.WriteLine("║  2. Search Bands by Name                                   ║");
+                Console.WriteLine("║  3. Filter Artists by Instrument                           ║");
+                Console.WriteLine("║  4. Filter Songs by Genre                                  ║");
+                Console.WriteLine("║  5. Filter Active/Inactive Artists                         ║");
+                Console.WriteLine("║  0. Back to Main Menu                                      ║");
+                Console.WriteLine("╚════════════════════════════════════════════════════════════╝");
+                Console.Write("\nEnter your choice: ");
+
+                string choice = Console.ReadLine();
+                switch (choice)
+                {
+                    case "1":
+                        SearchArtistsByName();
+                        Console.ReadKey();
+                        break;
+                    case "2":
+                        SearchBandsByName();
+                        Console.ReadKey();
+                        break;
+                    case "3":
+                        FilterArtistsByInstrument();
+                        Console.ReadKey();
+                        break;
+                    case "4":
+                        FilterSongsByGenre();
+                        Console.ReadKey();
+                        break;
+                    case "5":
+                        FilterArtistsByStatus();
+                        Console.ReadKey();
+                        break;
+                    case "0":
+                        back = true;
+                        break;
+                    default:
+                        Console.WriteLine("\nInvalid choice.");
+                        Console.ReadKey();
+                        break;
+                }
+            }
+        }
+
+        static void SearchArtistsByName()
+        {
+            Console.Clear();
+            Console.WriteLine("=== SEARCH ARTISTS BY NAME ===\n");
+
+            Console.Write("Enter artist name (partial match): ");
+            string searchTerm = Console.ReadLine()?.ToLower() ?? "";
+
+            List<Artist> allArtists = GetAllArtists();
+            List<Artist> results = new List<Artist>();
+
+            for (int i = 0; i < allArtists.Count; i++)
+            {
+                if (allArtists[i].Name.ToLower().Contains(searchTerm))
+                {
+                    results.Add(allArtists[i]);
+                }
+            }
+
+            Console.WriteLine($"\nFound {results.Count} artist(s):\n");
+
+            for (int i = 0; i < results.Count; i++)
+            {
+                Console.WriteLine($"• {results[i].Name} - {results[i].Instrument} - {results[i].FanCount:N0} fans");
+            }
+        }
+
+        static void SearchBandsByName()
+        {
+            Console.Clear();
+            Console.WriteLine("=== SEARCH BANDS BY NAME ===\n");
+
+            Console.Write("Enter band name (partial match): ");
+            string searchTerm = Console.ReadLine()?.ToLower() ?? "";
+
+            List<Band> allBands = GetAllBands();
+            List<Band> results = new List<Band>();
+
+            for (int i = 0; i < allBands.Count; i++)
+            {
+                if (allBands[i].BandName.ToLower().Contains(searchTerm))
+                {
+                    results.Add(allBands[i]);
+                }
+            }
+
+            Console.WriteLine($"\nFound {results.Count} band(s):\n");
+
+            for (int i = 0; i < results.Count; i++)
+            {
+                Console.WriteLine($"• {results[i].BandName} - {results[i].MonthlyListening:N0} listeners - {results[i].Artists.Count} artists");
+            }
+        }
+
+        static void FilterArtistsByInstrument()
+        {
+            Console.Clear();
+            Console.WriteLine("=== FILTER ARTISTS BY INSTRUMENT ===\n");
+
+            Console.Write("Enter instrument: ");
+            string instrument = Console.ReadLine()?.ToLower() ?? "";
+
+            List<Artist> allArtists = GetAllArtists();
+            List<Artist> results = new List<Artist>();
+
+            for (int i = 0; i < allArtists.Count; i++)
+            {
+                if (allArtists[i].Instrument.ToLower().Contains(instrument))
+                {
+                    results.Add(allArtists[i]);
+                }
+            }
+
+            Console.WriteLine($"\nFound {results.Count} artist(s):\n");
+
+            for (int i = 0; i < results.Count; i++)
+            {
+                Console.WriteLine($"• {results[i].Name} - {results[i].Instrument} - {results[i].FanCount:N0} fans");
+            }
+        }
+
+        static void FilterSongsByGenre()
+        {
+            Console.Clear();
+            Console.WriteLine("=== FILTER SONGS BY GENRE ===\n");
+
+            Console.WriteLine("Available genres:");
+            Genre[] genres = (Genre[])Enum.GetValues(typeof(Genre));
+            for (int i = 0; i < genres.Length; i++)
+            {
+                Console.WriteLine($"{i + 1}. {genres[i]}");
+            }
+
+            Console.Write("\nSelect genre number: ");
+            if (int.TryParse(Console.ReadLine(), out int index) && index > 0 && index <= genres.Length)
+            {
+                Genre selectedGenre = genres[index - 1];
+                List<Song> results = new List<Song>();
+
+                for (int i = 0; i < songs.Count; i++)
+                {
+                    if (songs[i].Genre == selectedGenre)
+                    {
+                        results.Add(songs[i]);
+                    }
+                }
+
+                Console.WriteLine($"\nFound {results.Count} song(s) in {selectedGenre}:\n");
+
+                for (int i = 0; i < results.Count; i++)
+                {
+                    Console.WriteLine($"• {results[i].SongName} - {results[i].Band.BandName} - {results[i].TotalPlays:N0} plays");
+                }
+            }
+            else
+            {
+                Console.WriteLine("\nInvalid selection.");
+            }
+        }
+
+        static void FilterArtistsByStatus()
+        {
+            Console.Clear();
+            Console.WriteLine("=== FILTER ARTISTS BY STATUS ===\n");
+
+            Console.WriteLine("1. Active Artists");
+            Console.WriteLine("2. Inactive Artists");
+            Console.Write("\nEnter choice: ");
+
+            string choice = Console.ReadLine();
+            bool? filterActive = choice == "1" ? true : choice == "2" ? false : null;
+
+            if (filterActive == null)
+            {
+                Console.WriteLine("\nInvalid choice.");
+                return;
+            }
+
+            List<Artist> allArtists = GetAllArtists();
+            List<Artist> results = new List<Artist>();
+
+            for (int i = 0; i < allArtists.Count; i++)
+            {
+                if (allArtists[i].IsActive == filterActive)
+                {
+                    results.Add(allArtists[i]);
+                }
+            }
+
+            string statusText = filterActive.Value ? "active" : "inactive";
+            Console.WriteLine($"\nFound {results.Count} {statusText} artist(s):\n");
+
+            for (int i = 0; i < results.Count; i++)
+            {
+                Console.WriteLine($"• {results[i].Name} - {results[i].Instrument} - {results[i].FanCount:N0} fans");
+            }
+        }
+        #endregion
+
     }
 }
