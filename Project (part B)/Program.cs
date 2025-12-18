@@ -930,5 +930,236 @@ namespace Project__part_B_
         }
         #endregion
 
+        #region Song Management
+        static void ManageSongs()
+        {
+            bool back = false;
+            while (!back)
+            {
+                Console.Clear();
+                Console.WriteLine("╔════════════════════════════════════════════════════════════╗");
+                Console.WriteLine("║                SONG MANAGEMENT                             ║");
+                Console.WriteLine("╠════════════════════════════════════════════════════════════╣");
+                Console.WriteLine("║  1. Add New Song                                           ║");
+                Console.WriteLine("║  2. View All Songs                                         ║");
+                Console.WriteLine("║  3. View Song Details                                      ║");
+                Console.WriteLine("║  4. Play Song                                              ║");
+                Console.WriteLine("║  5. Stop Song                                              ║");
+                Console.WriteLine("║  0. Back to Main Menu                                      ║");
+                Console.WriteLine("╚════════════════════════════════════════════════════════════╝");
+                Console.Write("\nEnter your choice: ");
+
+                string choice = Console.ReadLine();
+                switch (choice)
+                {
+                    case "1":
+                        AddSong();
+                        Console.ReadKey();
+                        break;
+                    case "2":
+                        ViewAllSongs();
+                        Console.ReadKey();
+                        break;
+                    case "3":
+                        ViewSongDetails();
+                        Console.ReadKey();
+                        break;
+                    case "4":
+                        PlaySong();
+                        Console.ReadKey();
+                        break;
+                    case "5":
+                        StopSong();
+                        Console.ReadKey();
+                        break;
+                    case "0":
+                        back = true;
+                        break;
+                    default:
+                        Console.WriteLine("\nInvalid choice.");
+                        Console.ReadKey();
+                        break;
+                }
+            }
+        }
+
+        static void AddSong()
+        {
+            Console.Clear();
+            Console.WriteLine("=== ADD NEW SONG ===\n");
+
+            List<Band> allBands = GetAllBands();
+
+            if (allBands.Count == 0)
+            {
+                Console.WriteLine("No bands found. Please add a band first.");
+                return;
+            }
+
+            try
+            {
+                Console.Write("Enter song name (3-50 characters): ");
+                string name = Console.ReadLine();
+
+                Console.Write("Enter total plays (≥ 0): ");
+                long totalPlays = long.Parse(Console.ReadLine());
+
+                Console.WriteLine("\nAvailable bands:");
+                for (int i = 0; i < allBands.Count; i++)
+                {
+                    Console.WriteLine($"{i + 1}. {allBands[i].BandName}");
+                }
+
+                Console.Write("\nSelect band number: ");
+                int bandIndex = int.Parse(Console.ReadLine());
+
+                if (bandIndex < 1 || bandIndex > allBands.Count)
+                {
+                    Console.WriteLine("\nInvalid band selection.");
+                    return;
+                }
+
+                Console.WriteLine("\nAvailable genres:");
+                Genre[] genres = (Genre[])Enum.GetValues(typeof(Genre));
+                for (int i = 0; i < genres.Length; i++)
+                {
+                    Console.WriteLine($"{i + 1}. {genres[i]}");
+                }
+
+                Console.Write("\nSelect genre number: ");
+                int genreIndex = int.Parse(Console.ReadLine());
+
+                if (genreIndex < 1 || genreIndex > genres.Length)
+                {
+                    Console.WriteLine("\nInvalid genre selection.");
+                    return;
+                }
+
+                Genre selectedGenre = genres[genreIndex - 1];
+                Song song = new Song(name, totalPlays, allBands[bandIndex - 1], selectedGenre);
+                songs.Add(song);
+
+                Console.WriteLine($"\n✓ Song '{name}' added successfully!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"\n✗ Error: {ex.Message}");
+            }
+        }
+
+        static void SortSongsByName(List<Song> songsList)
+        {
+            songsList.Sort();
+        }
+
+        static void ViewAllSongs()
+        {
+            Console.Clear();
+            Console.WriteLine("=== ALL SONGS ===\n");
+
+            if (songs.Count == 0)
+            {
+                Console.WriteLine("No songs found.");
+            }
+            else
+            {
+                List<Song> sortedSongs = new List<Song>(songs);
+                SortSongsByName(sortedSongs);
+                for (int i = 0; i < sortedSongs.Count; i++)
+                {
+                    Console.WriteLine($"• {sortedSongs[i].SongName} - {sortedSongs[i].Band.BandName} - {sortedSongs[i].Genre} - {sortedSongs[i].TotalPlays:N0} plays");
+                }
+            }
+        }
+
+        static void ViewSongDetails()
+        {
+            Console.Clear();
+            Console.WriteLine("=== SONG DETAILS ===\n");
+
+            if (songs.Count == 0)
+            {
+                Console.WriteLine("No songs found.");
+                return;
+            }
+
+            for (int i = 0; i < songs.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {songs[i].SongName}");
+            }
+
+            Console.Write("\nSelect song number: ");
+            if (int.TryParse(Console.ReadLine(), out int index) && index > 0 && index <= songs.Count)
+            {
+                Console.WriteLine($"\n{songs[index - 1].GetMetadata()}");
+            }
+            else
+            {
+                Console.WriteLine("\nInvalid selection.");
+            }
+        }
+
+        static void PlaySong()
+        {
+            Console.Clear();
+            Console.WriteLine("=== PLAY SONG ===\n");
+
+            if (songs.Count == 0)
+            {
+                Console.WriteLine("No songs found.");
+                return;
+            }
+
+            for (int i = 0; i < songs.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {songs[i].SongName} - {songs[i].Band.BandName}");
+            }
+
+            Console.Write("\nSelect song number: ");
+            if (!int.TryParse(Console.ReadLine(), out int index) || index < 0 || index > songs.Count)
+            {
+                Console.WriteLine("\nInvalid selection.");
+            }
+            else if (songsPlaying.Contains(songs[index - 1]))
+            {
+                Console.WriteLine("\nThis song is already playing.");
+            }
+            else
+            {
+                Console.WriteLine($"\n{songs[index - 1].Play()}");
+                Console.WriteLine($"Total plays: {songs[index - 1].TotalPlays:N0}");
+                songsPlaying.Add(songs[index - 1]);
+            }
+        }
+
+        static void StopSong()
+        {
+            Console.Clear();
+            Console.WriteLine("=== STOP SONG ===\n");
+
+            if (songsPlaying.Count == 0)
+            {
+                Console.WriteLine("No songs are playing.");
+                return;
+            }
+
+            for (int i = 0; i < songsPlaying.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {songsPlaying[i].SongName} - {songsPlaying[i].Band.BandName}");
+            }
+
+            Console.Write("\nSelect song number: ");
+            if (int.TryParse(Console.ReadLine(), out int index) && index > 0 && index <= songsPlaying.Count)
+            {
+                Console.WriteLine($"\n{songsPlaying[index - 1].Stop()}");
+                songsPlaying.Remove(songsPlaying[index - 1]);
+            }
+            else
+            {
+                Console.WriteLine("\nInvalid selection.");
+            }
+        }
+        #endregion
+
     }
 }
