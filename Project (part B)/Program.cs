@@ -561,5 +561,210 @@ namespace Project__part_B_
         }
         #endregion
 
+        #region Artist Management
+        static void ManageArtists()
+        {
+            bool back = false;
+            while (!back)
+            {
+                Console.Clear();
+                Console.WriteLine("╔════════════════════════════════════════════════════════════╗");
+                Console.WriteLine("║               ARTIST MANAGEMENT                            ║");
+                Console.WriteLine("╠════════════════════════════════════════════════════════════╣");
+                Console.WriteLine("║  1. View All Artists                                       ║");
+                Console.WriteLine("║  2. View Artist Details                                    ║");
+                Console.WriteLine("║  3. Update Artist Status                                   ║");
+                Console.WriteLine("║  4. Compare Two Artists                                    ║");
+                Console.WriteLine("║  0. Back to Main Menu                                      ║");
+                Console.WriteLine("╚════════════════════════════════════════════════════════════╝");
+                Console.Write("\nEnter your choice: ");
+
+                string choice = Console.ReadLine();
+                switch (choice)
+                {
+                    case "1":
+                        ViewAllArtists();
+                        Console.ReadKey();
+                        break;
+                    case "2":
+                        ViewArtistDetails();
+                        Console.ReadKey();
+                        break;
+                    case "3":
+                        UpdateArtistStatus();
+                        Console.ReadKey();
+                        break;
+                    case "4":
+                        CompareTwoArtists();
+                        Console.ReadKey();
+                        break;
+                    case "0":
+                        back = true;
+                        break;
+                    default:
+                        Console.WriteLine("\nInvalid choice.");
+                        Console.ReadKey();
+                        break;
+                }
+            }
+        }
+
+        static List<Artist> GetAllArtists()
+        {
+            List<Artist> allArtists = new List<Artist>();
+            for (int i = 0; i < recordLabels.Count; i++)
+            {
+                for (int j = 0; j < recordLabels[i].Bands.Count; j++)
+                {
+                    for (int k = 0; k < recordLabels[i].Bands[j].Artists.Count; k++)
+                    {
+                        Artist artist = recordLabels[i].Bands[j].Artists[k];
+                        bool alreadyAdded = false;
+                        for (int a = 0; a < allArtists.Count; a++)
+                        {
+                            if (Artist.AreEqual(allArtists[a], artist))
+                            {
+                                alreadyAdded = true;
+                                break;
+                            }
+                        }
+                        if (!alreadyAdded)
+                        {
+                            allArtists.Add(artist);
+                        }
+                    }
+                }
+            }
+            return allArtists;
+        }
+
+        static void SortArtistsByName(List<Artist> artists)
+        {
+            artists.Sort();
+        }
+
+        static void ViewAllArtists()
+        {
+            Console.Clear();
+            Console.WriteLine("=== ALL ARTISTS ===\n");
+
+            List<Artist> allArtists = GetAllArtists();
+
+            if (allArtists.Count == 0)
+            {
+                Console.WriteLine("No artists found.");
+            }
+            else
+            {
+                SortArtistsByName(allArtists);
+                for (int i = 0; i < allArtists.Count; i++)
+                {
+                    string status = allArtists[i].IsActive ? "Active" : "Inactive";
+                    Console.WriteLine($"• {allArtists[i].Name} - {allArtists[i].Instrument} - {status} - {allArtists[i].FanCount:N0} fans");
+                }
+            }
+        }
+
+        static void ViewArtistDetails()
+        {
+            Console.Clear();
+            Console.WriteLine("=== ARTIST DETAILS ===\n");
+
+            List<Artist> allArtists = GetAllArtists();
+
+            if (allArtists.Count == 0)
+            {
+                Console.WriteLine("No artists found.");
+                return;
+            }
+
+            for (int i = 0; i < allArtists.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {allArtists[i].Name}");
+            }
+
+            Console.Write("\nSelect artist number: ");
+            if (int.TryParse(Console.ReadLine(), out int index) && index > 0 && index <= allArtists.Count)
+            {
+                Console.WriteLine($"\n{allArtists[index - 1].GetInfo()}");
+            }
+            else
+            {
+                Console.WriteLine("\nInvalid selection.");
+            }
+        }
+
+        static void UpdateArtistStatus()
+        {
+            Console.Clear();
+            Console.WriteLine("=== UPDATE ARTIST STATUS ===\n");
+
+            List<Artist> allArtists = GetAllArtists();
+
+            if (allArtists.Count == 0)
+            {
+                Console.WriteLine("No artists found.");
+                return;
+            }
+
+            for (int i = 0; i < allArtists.Count; i++)
+            {
+                string status = allArtists[i].IsActive ? "Active" : "Inactive";
+                Console.WriteLine($"{i + 1}. {allArtists[i].Name} - {status}");
+            }
+
+            Console.Write("\nSelect artist number: ");
+            if (int.TryParse(Console.ReadLine(), out int index) && index > 0 && index <= allArtists.Count)
+            {
+                Artist artist = allArtists[index - 1];
+                artist.IsActive = !artist.IsActive;
+                string newStatus = artist.IsActive ? "Active" : "Inactive";
+                Console.WriteLine($"\n✓ {artist.Name} status changed to: {newStatus}");
+            }
+            else
+            {
+                Console.WriteLine("\nInvalid selection.");
+            }
+        }
+
+        static void CompareTwoArtists()
+        {
+            Console.Clear();
+            Console.WriteLine("=== COMPARE TWO ARTISTS ===\n");
+
+            List<Artist> allArtists = GetAllArtists();
+
+            if (allArtists.Count < 2)
+            {
+                Console.WriteLine("Need at least 2 artists to compare.");
+                return;
+            }
+
+            for (int i = 0; i < allArtists.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {allArtists[i].Name}");
+            }
+
+            Console.Write("\nSelect first artist number: ");
+            if (!int.TryParse(Console.ReadLine(), out int index1) || index1 < 1 || index1 > allArtists.Count)
+            {
+                Console.WriteLine("\nInvalid selection.");
+                return;
+            }
+
+            Console.Write("Select second artist number: ");
+            if (!int.TryParse(Console.ReadLine(), out int index2) || index2 < 1 || index2 > allArtists.Count)
+            {
+                Console.WriteLine("\nInvalid selection.");
+                return;
+            }
+
+            bool areEqual = Artist.AreEqual(allArtists[index1 - 1], allArtists[index2 - 1]);
+            string result = areEqual ? "EQUAL" : "NOT EQUAL";
+            Console.WriteLine($"\n{allArtists[index1 - 1].Name} and {allArtists[index2 - 1].Name} are {result}");
+        }
+        #endregion
+
+        
     }
 }
