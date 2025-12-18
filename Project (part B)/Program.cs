@@ -1628,5 +1628,35 @@ namespace Project__part_B_
         }
         #endregion
 
+        #region Test Data Initialization
+        static void InitializeTestData()
+        {
+            Producer producer1 = new Producer("Butch Vig", 70, 100000, 30, "Architecture of grunge sound");
+            Producer producer2 = new Producer("Rick Rubin", 61, 150000, 40, "Minimalist production");
+            Producer producer3 = new Producer("Quincy Jones", 91, 200000, 65, "Pop and jazz fusion");
+
+            Artist artist1 = new Artist("Kurt Cobain", 27, 150000, "Electric guitar", true, 5000000);
+            Artist artist2 = new Artist("Dave Grohl", 55, 180000, "Drums", true, 3000000);
+            Artist artist3 = new Artist("Krist Novoselic", 59, 120000, "Bass guitar", true, 2000000);
+            Artist artist4 = new Artist("Eddie Vedder", 59, 160000, "Vocals", true, 4000000);
+            Artist artist5 = new Artist("Stone Gossard", 58, 140000, "Guitar", true, 2500000);
+
+            Band band1 = new Band("Nirvana", 50000000, new List<Producer> { producer1 });
+            band1.Artists.AddRange(new List<Artist> { artist1, artist2, artist3 });
+
+            Band band2 = new Band("Pearl Jam", 45000000, new List<Producer> { producer2 });
+            band2.Artists.AddRange(new List<Artist> { artist4, artist5 });
+
+            RecordLabel label1 = new RecordLabel("Sub Pop Records", new List<Band> { band1, band2 });
+            recordLabels.Add(label1);
+
+            Song song1 = new Song("Smells Like Teen Spirit", 1800000000, band1, Genre.Rock);
+            Song song2 = new Song("Come As You Are", 1200000000, band1, Genre.Rock);
+            Song song3 = new Song("Alive", 900000000, band2, Genre.Rock);
+            Song song4 = new Song("Black", 750000000, band2, Genre.Rock);
+
+            songs.AddRange(new List<Song> { song1, song2, song3, song4 });
+        }
+        #endregion
     }
 }
