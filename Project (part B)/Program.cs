@@ -765,6 +765,170 @@ namespace Project__part_B_
         }
         #endregion
 
-        
+        #region Producer Management
+        static void ManageProducers()
+        {
+            bool back = false;
+            while (!back)
+            {
+                Console.Clear();
+                Console.WriteLine("╔════════════════════════════════════════════════════════════╗");
+                Console.WriteLine("║              PRODUCER MANAGEMENT                           ║");
+                Console.WriteLine("╠════════════════════════════════════════════════════════════╣");
+                Console.WriteLine("║  1. View All Producers                                     ║");
+                Console.WriteLine("║  2. View Producer Details                                  ║");
+                Console.WriteLine("║  3. Compare Two Producers                                  ║");
+                Console.WriteLine("║  0. Back to Main Menu                                      ║");
+                Console.WriteLine("╚════════════════════════════════════════════════════════════╝");
+                Console.Write("\nEnter your choice: ");
+
+                string choice = Console.ReadLine();
+                switch (choice)
+                {
+                    case "1":
+                        ViewAllProducers();
+                        Console.ReadKey();
+                        break;
+                    case "2":
+                        ViewProducerDetails();
+                        Console.ReadKey();
+                        break;
+                    case "3":
+                        CompareTwoProducers();
+                        Console.ReadKey();
+                        break;
+                    case "0":
+                        back = true;
+                        break;
+                    default:
+                        Console.WriteLine("\nInvalid choice.");
+                        Console.ReadKey();
+                        break;
+                }
+            }
+        }
+
+        static List<Producer> GetAllProducers()
+        {
+            List<Producer> allProducers = new List<Producer>();
+            for (int i = 0; i < recordLabels.Count; i++)
+            {
+                for (int j = 0; j < recordLabels[i].Bands.Count; j++)
+                {
+                    for (int k = 0; k < recordLabels[i].Bands[j].Producers.Count; k++)
+                    {
+                        Producer producer = recordLabels[i].Bands[j].Producers[k];
+                        bool alreadyAdded = false;
+                        for (int p = 0; p < allProducers.Count; p++)
+                        {
+                            if (Producer.AreEqual(allProducers[p], producer))
+                            {
+                                alreadyAdded = true;
+                                break;
+                            }
+                        }
+                        if (!alreadyAdded)
+                        {
+                            allProducers.Add(producer);
+                        }
+                    }
+                }
+            }
+            return allProducers;
+        }
+
+        static void SortProducersByName(List<Producer> producers)
+        {
+            producers.Sort();
+        }
+
+        static void ViewAllProducers()
+        {
+            Console.Clear();
+            Console.WriteLine("=== ALL PRODUCERS ===\n");
+
+            List<Producer> allProducers = GetAllProducers();
+
+            if (allProducers.Count == 0)
+            {
+                Console.WriteLine("No producers found.");
+            }
+            else
+            {
+                SortProducersByName(allProducers);
+                for (int i = 0; i < allProducers.Count; i++)
+                {
+                    Console.WriteLine($"• {allProducers[i].Name} - {allProducers[i].Specialization} - {allProducers[i].YearsOfExperience} years exp.");
+                }
+            }
+        }
+
+        static void ViewProducerDetails()
+        {
+            Console.Clear();
+            Console.WriteLine("=== PRODUCER DETAILS ===\n");
+
+            List<Producer> allProducers = GetAllProducers();
+
+            if (allProducers.Count == 0)
+            {
+                Console.WriteLine("No producers found.");
+                return;
+            }
+
+            for (int i = 0; i < allProducers.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {allProducers[i].Name}");
+            }
+
+            Console.Write("\nSelect producer number: ");
+            if (int.TryParse(Console.ReadLine(), out int index) && index > 0 && index <= allProducers.Count)
+            {
+                Console.WriteLine($"\n{allProducers[index - 1].GetInfo()}");
+            }
+            else
+            {
+                Console.WriteLine("\nInvalid selection.");
+            }
+        }
+
+        static void CompareTwoProducers()
+        {
+            Console.Clear();
+            Console.WriteLine("=== COMPARE TWO PRODUCERS ===\n");
+
+            List<Producer> allProducers = GetAllProducers();
+
+            if (allProducers.Count < 2)
+            {
+                Console.WriteLine("Need at least 2 producers to compare.");
+                return;
+            }
+
+            for (int i = 0; i < allProducers.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {allProducers[i].Name}");
+            }
+
+            Console.Write("\nSelect first producer number: ");
+            if (!int.TryParse(Console.ReadLine(), out int index1) || index1 < 1 || index1 > allProducers.Count)
+            {
+                Console.WriteLine("\nInvalid selection.");
+                return;
+            }
+
+            Console.Write("Select second producer number: ");
+            if (!int.TryParse(Console.ReadLine(), out int index2) || index2 < 1 || index2 > allProducers.Count)
+            {
+                Console.WriteLine("\nInvalid selection.");
+                return;
+            }
+
+            bool areEqual = Producer.AreEqual(allProducers[index1 - 1], allProducers[index2 - 1]);
+            string result = areEqual ? "EQUAL" : "NOT EQUAL";
+            Console.WriteLine($"\n{allProducers[index1 - 1].Name} and {allProducers[index2 - 1].Name} are {result}");
+        }
+        #endregion
+
     }
 }
