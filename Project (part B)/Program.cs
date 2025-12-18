@@ -1161,5 +1161,260 @@ namespace Project__part_B_
         }
         #endregion
 
+        #region Statistics & Reports
+        static void ViewStatistics()
+        {
+            bool back = false;
+            while (!back)
+            {
+                Console.Clear();
+                Console.WriteLine("╔════════════════════════════════════════════════════════════╗");
+                Console.WriteLine("║           STATISTICS & REPORTS                             ║");
+                Console.WriteLine("╠════════════════════════════════════════════════════════════╣");
+                Console.WriteLine("║  1. Overall Statistics                                     ║");
+                Console.WriteLine("║  2. Top Artists by Fans                                    ║");
+                Console.WriteLine("║  3. Top Bands by Listeners                                 ║");
+                Console.WriteLine("║  4. Top Songs by Plays                                     ║");
+                Console.WriteLine("║  5. Genre Distribution                                     ║");
+                Console.WriteLine("║  0. Back to Main Menu                                      ║");
+                Console.WriteLine("╚════════════════════════════════════════════════════════════╝");
+                Console.Write("\nEnter your choice: ");
+
+                string choice = Console.ReadLine();
+                switch (choice)
+                {
+                    case "1":
+                        ShowOverallStatistics();
+                        Console.ReadKey();
+                        break;
+                    case "2":
+                        ShowTopArtists();
+                        Console.ReadKey();
+                        break;
+                    case "3":
+                        ShowTopBands();
+                        Console.ReadKey();
+                        break;
+                    case "4":
+                        ShowTopSongs();
+                        Console.ReadKey();
+                        break;
+                    case "5":
+                        ShowGenreDistribution();
+                        Console.ReadKey();
+                        break;
+                    case "0":
+                        back = true;
+                        break;
+                    default:
+                        Console.WriteLine("\nInvalid choice.");
+                        Console.ReadKey();
+                        break;
+                }
+            }
+        }
+
+        static void ShowOverallStatistics()
+        {
+            Console.Clear();
+            Console.WriteLine("=== OVERALL STATISTICS ===\n");
+
+            int labelCount = recordLabels.Count;
+            List<Band> allBands = GetAllBands();
+            List<Artist> allArtists = GetAllArtists();
+            List<Producer> allProducers = GetAllProducers();
+            int songCount = songs.Count;
+
+            Console.WriteLine($"Record Labels: {labelCount}");
+            Console.WriteLine($"Bands: {allBands.Count}");
+            Console.WriteLine($"Artists: {allArtists.Count}");
+            Console.WriteLine($"Producers: {allProducers.Count}");
+            Console.WriteLine($"Songs: {songCount}");
+
+            if (allArtists.Count > 0)
+            {
+                int activeArtists = 0;
+                for (int i = 0; i < allArtists.Count; i++)
+                {
+                    if (allArtists[i].IsActive)
+                        activeArtists++;
+                }
+                double percentage = (double)activeArtists / allArtists.Count * 100;
+                Console.WriteLine($"\nActive Artists: {activeArtists} ({percentage:F1}%)");
+            }
+
+            if (songCount > 0)
+            {
+                long totalPlays = 0;
+                for (int i = 0; i < songs.Count; i++)
+                {
+                    totalPlays += songs[i].TotalPlays;
+                }
+                Console.WriteLine($"\nTotal Song Plays: {totalPlays:N0}");
+                Console.WriteLine($"Average Plays per Song: {totalPlays / songCount:N0}");
+            }
+        }
+
+        static void SortArtistsByFans(List<Artist> artists)
+        {
+            for (int i = 0; i < artists.Count - 1; i++)
+            {
+                for (int j = 0; j < artists.Count - i - 1; j++)
+                {
+                    if (artists[j].FanCount < artists[j + 1].FanCount)
+                    {
+                        Artist temp = artists[j];
+                        artists[j] = artists[j + 1];
+                        artists[j + 1] = temp;
+                    }
+                }
+            }
+        }
+
+        static void ShowTopArtists()
+        {
+            Console.Clear();
+            Console.WriteLine("=== TOP ARTISTS BY FANS ===\n");
+
+            List<Artist> allArtists = GetAllArtists();
+
+            if (allArtists.Count == 0)
+            {
+                Console.WriteLine("No artists found.");
+            }
+            else
+            {
+                SortArtistsByFans(allArtists);
+                int limit = allArtists.Count < 10 ? allArtists.Count : 10;
+                for (int i = 0; i < limit; i++)
+                {
+                    Console.WriteLine($"{i + 1}. {allArtists[i].Name} - {allArtists[i].FanCount:N0} fans - {allArtists[i].Instrument}");
+                }
+            }
+        }
+
+        static void SortBandsByListeners(List<Band> bands)
+        {
+            for (int i = 0; i < bands.Count - 1; i++)
+            {
+                for (int j = 0; j < bands.Count - i - 1; j++)
+                {
+                    if (bands[j].MonthlyListening < bands[j + 1].MonthlyListening)
+                    {
+                        Band temp = bands[j];
+                        bands[j] = bands[j + 1];
+                        bands[j + 1] = temp;
+                    }
+                }
+            }
+        }
+
+        static void ShowTopBands()
+        {
+            Console.Clear();
+            Console.WriteLine("=== TOP BANDS BY MONTHLY LISTENERS ===\n");
+
+            List<Band> allBands = GetAllBands();
+
+            if (allBands.Count == 0)
+            {
+                Console.WriteLine("No bands found.");
+            }
+            else
+            {
+                SortBandsByListeners(allBands);
+                int limit = allBands.Count < 10 ? allBands.Count : 10;
+                for (int i = 0; i < limit; i++)
+                {
+                    Console.WriteLine($"{i + 1}. {allBands[i].BandName} - {allBands[i].MonthlyListening:N0} listeners - {allBands[i].Artists.Count} artists");
+                }
+            }
+        }
+
+        static void SortSongsByPlays(List<Song> songsList)
+        {
+            for (int i = 0; i < songsList.Count - 1; i++)
+            {
+                for (int j = 0; j < songsList.Count - i - 1; j++)
+                {
+                    if (songsList[j].TotalPlays < songsList[j + 1].TotalPlays)
+                    {
+                        Song temp = songsList[j];
+                        songsList[j] = songsList[j + 1];
+                        songsList[j + 1] = temp;
+                    }
+                }
+            }
+        }
+
+        static void ShowTopSongs()
+        {
+            Console.Clear();
+            Console.WriteLine("=== TOP SONGS BY PLAYS ===\n");
+
+            if (songs.Count == 0)
+            {
+                Console.WriteLine("No songs found.");
+            }
+            else
+            {
+                List<Song> sortedSongs = new List<Song>(songs);
+                SortSongsByPlays(sortedSongs);
+                int limit = sortedSongs.Count < 10 ? sortedSongs.Count : 10;
+                for (int i = 0; i < limit; i++)
+                {
+                    Console.WriteLine($"{i + 1}. {sortedSongs[i].SongName} - {sortedSongs[i].Band.BandName} - {sortedSongs[i].TotalPlays:N0} plays");
+                }
+            }
+        }
+
+        static void ShowGenreDistribution()
+        {
+            Console.Clear();
+            Console.WriteLine("=== GENRE DISTRIBUTION ===\n");
+
+            if (songs.Count == 0)
+            {
+                Console.WriteLine("No songs found.");
+                return;
+            }
+
+            Dictionary<Genre, int> genreCounts = new Dictionary<Genre, int>();
+
+            for (int i = 0; i < songs.Count; i++)
+            {
+                if (genreCounts.ContainsKey(songs[i].Genre))
+                {
+                    genreCounts[songs[i].Genre]++;
+                }
+                else
+                {
+                    genreCounts[songs[i].Genre] = 1;
+                }
+            }
+
+            List<KeyValuePair<Genre, int>> genreList = new List<KeyValuePair<Genre, int>>(genreCounts);
+
+            for (int i = 0; i < genreList.Count - 1; i++)
+            {
+                for (int j = 0; j < genreList.Count - i - 1; j++)
+                {
+                    if (genreList[j].Value < genreList[j + 1].Value)
+                    {
+                        KeyValuePair<Genre, int> temp = genreList[j];
+                        genreList[j] = genreList[j + 1];
+                        genreList[j + 1] = temp;
+                    }
+                }
+            }
+
+            for (int i = 0; i < genreList.Count; i++)
+            {
+                double percentage = (double)genreList[i].Value / songs.Count * 100;
+                Console.WriteLine($"{genreList[i].Key}: {genreList[i].Value} songs ({percentage:F1}%)");
+            }
+        }
+        #endregion
+
     }
 }
